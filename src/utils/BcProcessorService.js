@@ -8,8 +8,17 @@ export default class BcProcessorService {
 
   async checkTransaction(transactionHash, account) {
     const status = await this.web3Service.getTransaction(transactionHash);
+    console.log(status, transactionHash);
+    
     if (status && status.blockNumber) {
       this.setTx(transactionHash, account, 'completed', false);
+    }
+
+    if(!status) {
+      //this.setTx(transactionHash, account, 'missing tx', false);
+      console.log('tx is missing');
+      
+
     }
   }
 

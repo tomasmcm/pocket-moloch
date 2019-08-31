@@ -33,6 +33,7 @@ const Routes = () => (
     <Route path="/sign-out" exact component={SignOut} />
     <Route path="/confirm" exact component={Confirm} />
     <Route path="/add-device/:deviceAddr" exact component={AddDevice} />
+    <Route path="/devices" exact component={AddDevice} />
     <Route path="*" component={FourOhFour} />
   </Switch>
 );
