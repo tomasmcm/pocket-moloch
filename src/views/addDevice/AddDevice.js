@@ -7,6 +7,7 @@ import BcProcessorService from '../../utils/BcProcessorService';
 import Web3Service from '../../utils/Web3Service';
 import BottomNav from '../../components/shared/BottomNav';
 import Loading from '../../components/shared/Loading';
+import ConnectAccount from '../../components/account/ConnectAccount';
 
 const AddDevice = ({ match, history }) => {
   const [currentUser] = useContext(CurrentUserContext);
@@ -178,6 +179,7 @@ const AddDevice = ({ match, history }) => {
           {renderList()}
         </>
       )}
+      <ConnectAccount />
       {!currentUser && <p className="Pad">Not logged in</p>}
       <BottomNav />
     </div>

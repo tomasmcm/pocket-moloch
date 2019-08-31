@@ -55,6 +55,13 @@ const TopNav = (props) => {
             >
               Account
             </Link>
+            <Link
+              className="Dropdown__Open--Item"
+              to="/devices"
+              onClick={toggleElement}
+            >
+              Devices
+            </Link>
             <a
               className="Dropdown__Open--Item"
               onClick={() => toggle('signOutMsg')}
