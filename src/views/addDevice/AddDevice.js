@@ -33,7 +33,7 @@ const AddDevice = ({ match, history }) => {
   }, [currentUser, deviceAdded, deviceRemoved]);
 
   const renderList = () => {
-    return accountDevices.map((device, idx) => {
+    return accountDevices.filter((item) => item.type !== "Extension").map((device, idx) => {
       return (
         <div className="Row Device" key={idx}>
           <p>{device.device.address}</p>
