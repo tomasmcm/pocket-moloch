@@ -1,60 +1,64 @@
-import React, { useContext, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import React, { useContext, useState } from 'react'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
-import QRCode from 'react-qr-code';
-import QrReader from 'react-qr-reader';
+import QRCode from 'react-qr-code'
+import QrReader from 'react-qr-reader'
 
-import config from '../../config';
+import config from '../../config'
 
-import { CurrentUserContext, CurrentWalletContext } from '../../contexts/Store';
-import Modal from '../shared/Modal';
+import { CurrentUserContext, CurrentWalletContext } from '../../contexts/Store'
+import Modal from '../shared/Modal'
 
-import useInterval from '../../utils/PollingUtil';
-import useModal from '../shared/useModal';
+import useInterval from '../../utils/PollingUtil'
+import useModal from '../shared/useModal'
 
 const ConnectAccount = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
-  //const [loading] = useContext(LoaderContext);
+  const [currentUser] = useContext(CurrentUserContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
+  // const [loading] = useContext(LoaderContext);
 
-  const [qrCode, setQrCode] = useState('');
-  const [delay, setDelay] = useState(null);
-  const [copied, setCopied] = useState(false);
-  const { isShowing, toggle } = useModal();
-  const QrDelay = 500;
+  const [qrCode, setQrCode] = useState('')
+  const [delay, setDelay] = useState(null)
+  const [copied, setCopied] = useState(false)
+  const { isShowing, toggle } = useModal()
+  const QrDelay = 500
 
   const onCopy = () => {
-    setDelay(2500);
-    setCopied(true);
-  };
+    setDelay(2500)
+    setCopied(true)
+  }
 
   useInterval(() => {
-    setCopied(false);
-    setDelay(null);
-  }, delay);
+    setCopied(false)
+    setDelay(null)
+  }, delay)
 
   const getQr = () => {
-    const sdk = currentUser.sdk;
-    //update from localhost with config
-    const url = `${config.QR_HOST_URL}`;
+    const sdk = currentUser.sdk
+    // update from localhost with config
+    const url = `${config.QR_HOST_URL}`
     try {
-      const connectUrl = `${url}/add-device/${sdk.state.deviceAddress}`;
+      const connectUrl = `${url}/add-device/${sdk.state.deviceAddress}`
       // console.log('connectUrl', connectUrl);
-      setQrCode(connectUrl);
+      setQrCode(connectUrl)
     } catch (err) {
-      console.log(err);
+      // TODO: handle errors better
+      // eslint-disable-next-line no-console
+      console.log(err)
     }
-  };
+  }
 
-  const handleScan = (data) => {
+  const handleScan = data => {
     if (data) {
-      window.location = data;
+      window.location = data
     }
-  };
+  }
 
-  const handleError = (err) => {
-    console.error(err);
-  };
+  const handleError = err => {
+    // TODO: handle errors better
+    // eslint-disable-next-line no-console
+    console.error(err)
+  }
 
   return (
     <>
@@ -66,8 +70,8 @@ const ConnectAccount = () => {
       {currentWallet.state === 'Not Connected' ? (
         <button
           onClick={() => {
-            toggle('getQrCode');
-            getQr();
+            toggle('getQrCode')
+            getQr()
           }}
         >
           Add This Device
@@ -130,7 +134,7 @@ const ConnectAccount = () => {
         </div>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default ConnectAccount;
+export default ConnectAccount

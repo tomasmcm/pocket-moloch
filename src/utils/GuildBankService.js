@@ -1,37 +1,37 @@
-import Web3Service from '../utils/Web3Service';
-import WethService from './WethService';
-import gbAbi from '../contracts/guildbank.json';
+import Web3Service from '../utils/Web3Service'
+import WethService from './WethService'
+import gbAbi from '../contracts/guildbank.json'
 
 export default class GuildBankService {
-  contractAddr;
-  web3Service;
-  contract;
-  gbAbi;
+  contractAddr
+  web3Service
+  contract
+  gbAbi
 
   constructor(contractAddr) {
-    this.contractAddr = contractAddr;
-    this.web3Service = new Web3Service();
-    this.wethService = new WethService();
-    this.gbAbi = gbAbi;
+    this.contractAddr = contractAddr
+    this.web3Service = new Web3Service()
+    this.wethService = new WethService()
+    this.gbAbi = gbAbi
 
-    this.initContract();
+    this.initContract()
   }
 
   async initContract() {
     this.contract = await this.web3Service.initContract(
       this.gbAbi,
-      this.contractAddr,
-    );
+      this.contractAddr
+    )
   }
 
   async getAllEvents() {
     if (!this.contract) {
-      await this.initContract();
+      await this.initContract()
     }
-    let events = await this.contract.events.allEvents({
+    const events = await this.contract.events.allEvents({
       fromBlock: 0,
-      toBlock: 'latest',
-    });
-    return events;
+      toBlock: 'latest'
+    })
+    return events
   }
 }

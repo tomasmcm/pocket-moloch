@@ -1,109 +1,108 @@
 // import React, { useContext } from 'react';
-import React, { useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
-import { ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { withApollo } from 'react-apollo';
+import React, { useEffect, useState } from 'react'
+import { Query, withApollo } from 'react-apollo'
+import { ResponsiveContainer, AreaChart, Area } from 'recharts'
 
-import McDaoService from '../../utils/McDaoService';
-import Web3Service from '../../utils/Web3Service';
-import BottomNav from '../../components/shared/BottomNav';
-import ErrorMessage from '../../components/shared/ErrorMessage';
-import Loading from '../../components/shared/Loading';
-import { GET_METADATA } from '../../utils/Queries';
+import McDaoService from '../../utils/McDaoService'
+import Web3Service from '../../utils/Web3Service'
+import BottomNav from '../../components/shared/BottomNav'
+import ErrorMessage from '../../components/shared/ErrorMessage'
+import Loading from '../../components/shared/Loading'
+import { GET_METADATA } from '../../utils/Queries'
 
-import './Home.scss';
-import WethService from '../../utils/WethService';
+import './Home.scss'
+import WethService from '../../utils/WethService'
 
 const Home = ({ client }) => {
-  const [vizData, setVizData] = useState([]);
-  const [chartView, setChartView] = useState('bank');
+  const [vizData, setVizData] = useState([])
+  const [chartView, setChartView] = useState('bank')
 
   // const weth = new WethService();
-  const { guildBankAddr } = client.cache.readQuery({ query: GET_METADATA });
+  const { guildBankAddr } = client.cache.readQuery({ query: GET_METADATA })
 
   useEffect(() => {
     const fetchData = async () => {
-      const web3Service = new Web3Service();
-      const wethService = new WethService();
+      const web3Service = new Web3Service()
+      const wethService = new WethService()
 
-      const mcDao = new McDaoService();
+      const mcDao = new McDaoService()
 
       if (guildBankAddr) {
-        const events = await mcDao.getAllEvents();
-        const firstBlock = events[0].blockNumber;
-        const latestBlock = await web3Service.latestBlock();
-        const blocksAlive = latestBlock.number - firstBlock;
+        const events = await mcDao.getAllEvents()
+        const firstBlock = events[0].blockNumber
+        const latestBlock = await web3Service.latestBlock()
+        const blocksAlive = latestBlock.number - firstBlock
 
-        const blockIntervals = 10;
-        const dataLength = blocksAlive / blockIntervals;
+        const blockIntervals = 10
+        const dataLength = blocksAlive / blockIntervals
 
         if (chartView === 'bank') {
-          const balancePromises = [];
-          const indexes = [];
+          const balancePromises = []
+          const indexes = []
           for (let x = 0; x <= blockIntervals; x++) {
-            const atBlock = firstBlock + Math.floor(dataLength) * x;
-            balancePromises.push(wethService.balanceOf(guildBankAddr, atBlock));
-            indexes.push(x);
+            const atBlock = firstBlock + Math.floor(dataLength) * x
+            balancePromises.push(wethService.balanceOf(guildBankAddr, atBlock))
+            indexes.push(x)
           }
-          const balanceData = await Promise.all(balancePromises);
+          const balanceData = await Promise.all(balancePromises)
           setVizData(
             balanceData.map((balance, index) => ({
               x: indexes[index],
-              y: balance,
-            })),
-          );
+              y: balance
+            }))
+          )
         }
 
         if (chartView === 'shares') {
-          const sharesPromises = [];
-          const indexes = [];
+          const sharesPromises = []
+          const indexes = []
           for (let x = 0; x <= blockIntervals; x++) {
-            const atBlock = firstBlock + Math.floor(dataLength) * x;
-            sharesPromises.push(mcDao.getTotalShares(atBlock));
-            indexes.push(x);
+            const atBlock = firstBlock + Math.floor(dataLength) * x
+            sharesPromises.push(mcDao.getTotalShares(atBlock))
+            indexes.push(x)
           }
-          const sharesData = await Promise.all(sharesPromises);
+          const sharesData = await Promise.all(sharesPromises)
           setVizData(
             sharesData.map((shares, index) => ({
               x: indexes[index],
-              y: shares,
-            })),
-          );
+              y: shares
+            }))
+          )
         }
 
         if (chartView === 'value') {
-          //const valuePromises = [];
-          const sharePromises = [];
-          const balancePromises = [];
+          // const valuePromises = [];
+          const sharePromises = []
+          const balancePromises = []
 
-          const indexes = [];
+          const indexes = []
           for (let x = 0; x <= blockIntervals; x++) {
-            const atBlock = firstBlock + Math.floor(dataLength) * x;
-            sharePromises.push(mcDao.getTotalShares(atBlock));
-            balancePromises.push(wethService.balanceOf(guildBankAddr, atBlock));
-            indexes.push(x);
+            const atBlock = firstBlock + Math.floor(dataLength) * x
+            sharePromises.push(mcDao.getTotalShares(atBlock))
+            balancePromises.push(wethService.balanceOf(guildBankAddr, atBlock))
+            indexes.push(x)
           }
-          const shareData = await Promise.all(sharePromises);
-          const balanceData = await Promise.all(balancePromises);
+          const shareData = await Promise.all(sharePromises)
+          const balanceData = await Promise.all(balancePromises)
 
           setVizData(
-            indexes.map((value) => ({
+            indexes.map(value => ({
               x: indexes[value],
-              y: balanceData[value] / shareData[value],
-            })),
-          );
+              y: balanceData[value] / shareData[value]
+            }))
+          )
         }
       }
-    };
+    }
 
-    fetchData();
-  }, [guildBankAddr, chartView]);
+    fetchData()
+  }, [guildBankAddr, chartView])
 
   return (
     <Query query={GET_METADATA} pollInterval={30000}>
       {({ loading, error, data }) => {
-        if (loading) return <Loading />;
-        if (error) return <ErrorMessage message={error} />;
+        if (loading) return <Loading />
+        if (error) return <ErrorMessage message={error} />
 
         return (
           <div className="Home">
@@ -147,42 +146,40 @@ const Home = ({ client }) => {
               </ResponsiveContainer>
             </div>
             <div className="Data">
-              <div 
-                  onClick={() => setChartView('bank')}
-                  className={'Bank' + (chartView === 'bank' ? ' Selected' : '')}
-                >
-                <h5>
-                  Bank
-                </h5>
+              <div
+                onClick={() => setChartView('bank')}
+                className={'Bank' + (chartView === 'bank' ? ' Selected' : '')}
+              >
+                <h5>Bank</h5>
                 <h2>Ξ {data.guildBankValue}</h2>
               </div>
               <div className="Row">
                 <div
-                    onClick={() => setChartView('shares')}
-                    className={'Shares' + (chartView === 'shares' ? ' Selected' : '')}
-                  >
-                  <h5>
-                    Shares
-                  </h5>
+                  onClick={() => setChartView('shares')}
+                  className={
+                    'Shares' + (chartView === 'shares' ? ' Selected' : '')
+                  }
+                >
+                  <h5>Shares</h5>
                   <h3>{data.totalShares}</h3>
                 </div>
                 <div
                   onClick={() => setChartView('value')}
-                  className={'ShareValue' + (chartView === 'value' ? ' Selected' : '')}
-                  >
-                  <h5>
-                    Share Value
-                  </h5>
+                  className={
+                    'ShareValue' + (chartView === 'value' ? ' Selected' : '')
+                  }
+                >
+                  <h5>Share Value</h5>
                   <h3>Ξ {data.shareValue.toFixed(4)}</h3>
                 </div>
               </div>
             </div>
             <BottomNav />
           </div>
-        );
+        )
       }}
     </Query>
-  );
-};
+  )
+}
 
-export default withApollo(Home);
+export default withApollo(Home)

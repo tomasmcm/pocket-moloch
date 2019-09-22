@@ -1,20 +1,20 @@
-import { Storage } from 'aws-amplify';
-import { gql } from 'apollo-boost';
+import { Storage } from 'aws-amplify'
+import { gql } from 'apollo-boost'
 
-export const GetMetaData = async (id) => {
-  const uri = await Storage.get(`proposal_${id}.json`);
+export const GetMetaData = async id => {
+  const uri = await Storage.get(`proposal_${id}.json`)
 
   try {
-    const res = await fetch(uri);
-    
+    const res = await fetch(uri)
+
     if (!res.ok) {
-      throw new Error(res.statusText);
+      throw new Error(res.statusText)
     }
-    return res.json();
+    return res.json()
   } catch (err) {
-    return { error: err };
+    return { error: err }
   }
-};
+}
 
 export const GET_PROPOSALS_QUERY = gql`
   query {
@@ -46,7 +46,7 @@ export const GET_PROPOSALS_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const GET_PROPOSAL_QUERY = gql`
   query proposal($id: String!) {
@@ -77,4 +77,4 @@ export const GET_PROPOSAL_QUERY = gql`
       }
     }
   }
-`;
+`

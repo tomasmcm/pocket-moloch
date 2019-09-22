@@ -1,41 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import ProposalList from './ProposalList';
-import { groupByStatus } from '../../utils/ProposalHelper';
+import ProposalList from './ProposalList'
+import { groupByStatus } from '../../utils/ProposalHelper'
 
-import './ProposalFilter.scss';
+import './ProposalFilter.scss'
 
-const ProposalFilter = ({ proposals, filter, history}) => {
-  const [groupedProposals, setGroupedProposals] = useState();
-  const [filteredProposals, setFilteredProposals] = useState([]);
-  
+const ProposalFilter = ({ proposals, filter, history }) => {
+  const [groupedProposals, setGroupedProposals] = useState()
+  const [filteredProposals, setFilteredProposals] = useState([])
+
   const handleSelect = (list, listName) => {
-    setFilteredProposals(list);
+    setFilteredProposals(list)
     history.push(`/proposals/${listName}`)
-  };
+  }
 
   useEffect(() => {
-    if(proposals){
-      const groupedProps = groupByStatus(proposals);
-    
-      if(filter in groupedProps){
-        setGroupedProposals(groupByStatus(proposals));
-        setFilteredProposals(groupedProps[filter]);
+    if (proposals) {
+      const groupedProps = groupByStatus(proposals)
+
+      if (filter in groupedProps) {
+        setGroupedProposals(groupByStatus(proposals))
+        setFilteredProposals(groupedProps[filter])
       } else {
-        if(groupedProps.VotingPeriod.length > 0) {
-          history.push(`/proposals/VotingPeriod`);
+        if (groupedProps.VotingPeriod.length > 0) {
+          history.push(`/proposals/VotingPeriod`)
         } else {
-          history.push(`/proposals/Completed`);
-          
+          history.push(`/proposals/Completed`)
         }
-        
       }
-      
     }
-  }, [proposals, filter, history]);
+  }, [proposals, filter, history])
 
   if (!groupedProposals) {
-    return <></>;
+    return <></>
   }
 
   return (
@@ -61,7 +58,7 @@ const ProposalFilter = ({ proposals, filter, history}) => {
           onClick={() =>
             handleSelect(
               groupedProposals.ReadyForProcessing,
-              'ReadyForProcessing',
+              'ReadyForProcessing'
             )
           }
           className={filter === 'ReadyForProcessing' ? 'Active' : null}
@@ -84,7 +81,7 @@ const ProposalFilter = ({ proposals, filter, history}) => {
       </div>
       <ProposalList proposals={filteredProposals} />
     </div>
-  );
-};
+  )
+}
 
-export default ProposalFilter;
+export default ProposalFilter

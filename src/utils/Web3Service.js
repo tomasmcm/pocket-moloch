@@ -1,49 +1,49 @@
-import Web3 from 'web3';
+import Web3 from 'web3'
 
-import config from '../config';
+import config from '../config'
 
 export default class Web3Service {
   constructor() {
-    this.web3 = new Web3(new Web3.providers.HttpProvider(config.INFURA_URI));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(config.INFURA_URI))
   }
 
-  getKeyStore(privateKey, password){
-    return this.web3.eth.accounts.encrypt(privateKey, password);
+  getKeyStore(privateKey, password) {
+    return this.web3.eth.accounts.encrypt(privateKey, password)
   }
 
-  async latestBlock(){
-    return await this.web3.eth.getBlock("latest");
+  latestBlock() {
+    return this.web3.eth.getBlock('latest')
   }
 
   fromWei(amount) {
     if (!amount) {
-      return 0;
+      return 0
     }
 
-    return this.web3.utils.fromWei(amount.toString(), 'ether');
+    return this.web3.utils.fromWei(amount.toString(), 'ether')
   }
 
   toWei(amount) {
-    return this.web3.utils.toWei(amount.toString(), 'ether');
+    return this.web3.utils.toWei(amount.toString(), 'ether')
   }
 
   toNumber(num) {
-    return num.toNumber();
+    return num.toNumber()
   }
 
   getTransaction(hash) {
-    return this.web3.eth.getTransaction(hash);
+    return this.web3.eth.getTransaction(hash)
   }
 
   initContract(abi, addr) {
-    return new this.web3.eth.Contract(abi, addr);
+    return new this.web3.eth.Contract(abi, addr)
   }
 
   getBalance(addr) {
-    return this.web3.eth.getBalance(addr);
+    return this.web3.eth.getBalance(addr)
   }
 
   getTime(block) {
-    return this.web3.eth.getBlock(block).timestamp;
+    return this.web3.eth.getBlock(block).timestamp
   }
 }

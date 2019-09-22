@@ -1,26 +1,26 @@
-import React, { useContext } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { ethToWei } from '@netgum/utils'; // returns BN
+import React, { useContext } from 'react'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { ethToWei } from '@netgum/utils' // returns BN
 
-import WethService from '../../utils/WethService';
-import Web3Service from '../../utils/Web3Service';
-import BcProcessorService from '../../utils/BcProcessorService';
-import McDaoService from '../../utils/McDaoService';
-import Loading from '../shared/Loading';
+import WethService from '../../utils/WethService'
+import Web3Service from '../../utils/Web3Service'
+import BcProcessorService from '../../utils/BcProcessorService'
+import McDaoService from '../../utils/McDaoService'
+import Loading from '../shared/Loading'
 
 import {
   CurrentUserContext,
   CurrentWalletContext,
-  LoaderContext,
-} from '../../contexts/Store';
-import useModal from '../shared/useModal';
+  LoaderContext
+} from '../../contexts/Store'
+import useModal from '../shared/useModal'
 
 const ApproveWeth = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [loading, setLoading] = useContext(LoaderContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
+  const [currentUser] = useContext(CurrentUserContext)
+  const [loading, setLoading] = useContext(LoaderContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
 
-  const { toggle } = useModal();
+  const { toggle } = useModal()
 
   return (
     <>
@@ -33,75 +33,77 @@ const ApproveWeth = () => {
       <Formik
         initialValues={{
           amount: '',
-          addr: currentUser.attributes['custom:account_address'],
+          addr: currentUser.attributes['custom:account_address']
         }}
-        validate={(values) => {
-          let errors = {};
+        validate={values => {
+          const errors = {}
           if (!values.amount) {
-            errors.amount = 'Required';
+            errors.amount = 'Required'
           }
 
-          return errors;
+          return errors
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const sdk = currentUser.sdk;
-          const wethService = new WethService();
-          const daoService = new McDaoService();
-          const web3Service = new Web3Service();
-          const bcprocessor = new BcProcessorService();
+          const sdk = currentUser.sdk
+          const wethService = new WethService()
+          const daoService = new McDaoService()
+          const web3Service = new Web3Service()
+          const bcprocessor = new BcProcessorService()
 
-          const bnZed = ethToWei(0);
+          const bnZed = ethToWei(0)
 
-          setLoading(true);
+          setLoading(true)
           try {
             const data = await wethService.approve(
               values.addr,
               daoService.contractAddr,
               web3Service.toWei(values.amount),
-              true,
-            );
+              true
+            )
 
             const estimated = await sdk.estimateAccountTransaction(
               wethService.contractAddr,
               bnZed,
-              data,
-            );
+              data
+            )
 
             // console.log(estimated);
             if (ethToWei(currentWallet.eth).lt(estimated.totalCost)) {
               alert(
                 `you need more gas, at least: ${web3Service.fromWei(
-                  estimated.totalCost.toString(),
-                )}`,
-              );
-              setLoading(false);
-              setSubmitting(false);
-              return false;
+                  estimated.totalCost.toString()
+                )}`
+              )
+              setLoading(false)
+              setSubmitting(false)
+              return false
             }
 
-            const hash = await sdk.submitAccountTransaction(estimated);
+            const hash = await sdk.submitAccountTransaction(estimated)
 
             bcprocessor.setTx(
               hash,
               currentUser.attributes['custom:account_address'],
               `Update wETH Allowance to ${values.amount}`,
-              true,
-            );
+              true
+            )
           } catch (err) {
-            console.log(err);
-            alert(`Something went wrong. please try again`);
+            // TODO: handle errors better
+            // eslint-disable-next-line no-console
+            console.log(err)
+            alert(`Something went wrong. please try again`)
           }
 
-          resetForm();
-          setLoading(false);
-          setSubmitting(false);
-          toggle('allowanceForm');
+          resetForm()
+          setLoading(false)
+          setSubmitting(false)
+          toggle('allowanceForm')
         }}
       >
         {({ isSubmitting }) => (
           <Form className="Form">
             <Field name="amount">
-              {({ field, form }) => (
+              {({ field }) => (
                 <div className={field.value ? 'Field HasValue' : 'Field '}>
                   <label>Amount</label>
                   <input
@@ -116,7 +118,7 @@ const ApproveWeth = () => {
             </Field>
             <ErrorMessage
               name="amount"
-              render={(msg) => <div className="Error">{msg}</div>}
+              render={msg => <div className="Error">{msg}</div>}
             />
             <button type="submit" disabled={isSubmitting}>
               Approve
@@ -125,7 +127,7 @@ const ApproveWeth = () => {
         )}
       </Formik>
     </>
-  );
-};
+  )
+}
 
-export default ApproveWeth;
+export default ApproveWeth

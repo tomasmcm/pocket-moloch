@@ -1,80 +1,80 @@
-import React, { useState, useContext } from 'react';
-import StackedVote from './StackedVote';
+import React, { useState, useContext } from 'react'
+import StackedVote from './StackedVote'
 
-import VoteYes from '../../assets/star-struck.png';
-import VoteNo from '../../assets/thumbs-down.png';
+import VoteYes from '../../assets/star-struck.png'
+import VoteNo from '../../assets/thumbs-down.png'
 
-import './VoteControl.scss';
-import MemberVotes from './MemberVotes';
-import { CurrentUserContext, CurrentWalletContext } from '../../contexts/Store';
+import './VoteControl.scss'
+import MemberVotes from './MemberVotes'
+import { CurrentUserContext, CurrentWalletContext } from '../../contexts/Store'
 
 const VoteControl = ({ submitVote, proposal }) => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
-  const [isElementOpen, setElementOpen] = useState(false);
-  const toggleElement = () => setElementOpen(!isElementOpen);
-  const [currentYesVote, setCurrentYesVote] = useState(0);
-  const [currentNoVote, setCurrentNoVote] = useState(0);
+  const [currentUser] = useContext(CurrentUserContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
+  const [isElementOpen, setElementOpen] = useState(false)
+  const toggleElement = () => setElementOpen(!isElementOpen)
+  const [currentYesVote, setCurrentYesVote] = useState(0)
+  const [currentNoVote, setCurrentNoVote] = useState(0)
 
-  const canVote = (proposal) => {
+  const canVote = proposal => {
     // check if user has votes
     // does not seem to work
     if (currentYesVote || currentNoVote) {
-      return false;
+      return false
     }
     if (!currentUser) {
-      return false;
+      return false
     }
-    const hasVoted = usersVote(proposal.votes);
+    const hasVoted = usersVote(proposal.votes)
     if (hasVoted && hasVoted.length) {
-      return false;
+      return false
     }
-    return proposal.status === 'VotingPeriod';
-  };
+    return proposal.status === 'VotingPeriod'
+  }
 
-  const usersVote = (votes) => {
+  const usersVote = votes => {
     // get current users vote, no or yes
     return (
       currentUser &&
       votes.filter(
-        (vote) =>
+        vote =>
           vote.memberAddress.toUpperCase() ===
-          currentUser.attributes['custom:account_address'].toUpperCase(),
+          currentUser.attributes['custom:account_address'].toUpperCase()
       )
-    );
-  };
+    )
+  }
 
-  const votedYes = (proposal) => {
-    // used for className 
+  const votedYes = proposal => {
+    // used for className
     return (currentUser &&
       usersVote(proposal.votes)[0] &&
       usersVote(proposal.votes)[0].uintVote === 1) ||
       currentYesVote
       ? 'Vote Yes Voted'
-      : 'Vote Yes';
-  };
+      : 'Vote Yes'
+  }
 
-  const votedNo = (proposal) => {
-    // used for className 
+  const votedNo = proposal => {
+    // used for className
     return (currentUser &&
       usersVote(proposal.votes)[0] &&
       usersVote(proposal.votes)[0].uintVote !== 1) ||
       currentNoVote
       ? 'Vote No Voted'
-      : 'Vote No';
-  };
+      : 'Vote No'
+  }
 
   const optimisticVote = (proposal, vote) => {
     // set vote imediatly to give user feedback
     // a yes vote is uint 1
     if (vote !== 1) {
-      setCurrentNoVote(currentWallet.shares);
+      setCurrentNoVote(currentWallet.shares)
     } else {
-      setCurrentYesVote(currentWallet.shares);
+      setCurrentYesVote(currentWallet.shares)
     }
 
-    submitVote(proposal, vote);
-  };
+    submitVote(proposal, vote)
+  }
 
   return (
     <div className="VoteControl">
@@ -140,7 +140,7 @@ const VoteControl = ({ submitVote, proposal }) => {
         {isElementOpen ? <MemberVotes votes={proposal.votes} /> : null}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default VoteControl;
+export default VoteControl

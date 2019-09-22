@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
-import BcProcessorService from '../../utils/BcProcessorService';
-import Web3Service from '../../utils/Web3Service';
-import { ethToWei } from '@netgum/utils'; // returns BN
+import React, { useContext } from 'react'
+import BcProcessorService from '../../utils/BcProcessorService'
+import Web3Service from '../../utils/Web3Service'
+import { ethToWei } from '@netgum/utils' // returns BN
 
-import { CurrentUserContext, CurrentWalletContext } from '../../contexts/Store';
+import { CurrentUserContext, CurrentWalletContext } from '../../contexts/Store'
 
 const Deploy = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [currentWallet, setCurrentWallet] = useContext(CurrentWalletContext);
-  const web3Service = new Web3Service();
+  const [currentUser] = useContext(CurrentUserContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
+  const web3Service = new Web3Service()
 
   return (
     <>
@@ -17,43 +17,41 @@ const Deploy = () => {
         currentWallet.nextState !== 'Deployed' && (
           <button
             onClick={() => {
-              const sdk = currentUser.sdk;
-              const bcprocessor = new BcProcessorService();
+              const sdk = currentUser.sdk
+              const bcprocessor = new BcProcessorService()
 
               sdk
                 .estimateAccountDeployment()
-                .then((estimated) => {
-                  // console.log(estimated);
+                .then(estimated => {
                   if (ethToWei(currentWallet.eth).lt(estimated.totalCost)) {
                     alert(
                       `you need more gas, at least: ${web3Service.fromWei(
-                        estimated.totalCost.toString(),
-                      )}`,
-                    );
+                        estimated.totalCost.toString()
+                      )}`
+                    )
 
-                    return false;
+                    return false
                   }
-                  sdk
-                    .deployAccount(estimated)
-                    .then((data) => {
-                      console.log('deployed', data);
-                      bcprocessor.setTx(
-                        data,
-                        currentUser.attributes['custom:account_address'],
-                        'Deploy contract wallet.',
-                        true,
-                      );
-                    })
-                    .catch((err) => console.log(err));
+
+                  sdk.deployAccount(estimated).then(data => {
+                    bcprocessor.setTx(
+                      data,
+                      currentUser.attributes['custom:account_address'],
+                      'Deploy contract wallet.',
+                      true
+                    )
+                  })
                 })
-                .catch((err) => console.log(err));
+                // TODO: handle errors better
+                // eslint-disable-next-line no-console
+                .catch(err => console.log(err))
             }}
           >
             Deploy
           </button>
         )}
     </>
-  );
-};
+  )
+}
 
-export default Deploy;
+export default Deploy

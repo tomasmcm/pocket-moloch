@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 
-import { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify'
 
-import Loading from '../../components/shared/Loading';
+import Loading from '../../components/shared/Loading'
 
 const SignUp = ({ history }) => {
-  const [authError, setAuthError] = useState();
+  const [authError, setAuthError] = useState()
 
   return (
     <div>
       <h2 className="Pad">Sign up with Email</h2>
       <Formik
         initialValues={{ username: '', email: '', password: '' }}
-        validate={(values) => {
-          let errors = {};
+        validate={values => {
+          const errors = {}
           if (!values.username) {
-            errors.email = 'Required';
+            errors.email = 'Required'
           }
           if (!values.email) {
-            errors.email = 'Required';
+            errors.email = 'Required'
           }
           if (!values.email) {
-            errors.password = 'Required';
+            errors.password = 'Required'
           }
 
-          return errors;
+          return errors
         }}
         onSubmit={async (values, { setSubmitting }) => {
           // set custom attributes to 0x0 as place holder
@@ -37,20 +37,19 @@ const SignUp = ({ history }) => {
               attributes: {
                 email: values.email,
                 'custom:account_address': '0x0',
-                'custom:device_address': '0x0',
-              },
-            });
-            history.push('/confirm');
+                'custom:device_address': '0x0'
+              }
+            })
+            history.push('/confirm')
           } catch (err) {
-            console.log('error signing up: ', err);
-            setSubmitting(false);
-            setAuthError(err);
+            setSubmitting(false)
+            setAuthError(err)
           }
         }}
       >
         {({ isSubmitting }) => {
           if (isSubmitting) {
-            return <Loading />;
+            return <Loading />
           }
 
           return (
@@ -59,7 +58,7 @@ const SignUp = ({ history }) => {
                 <div className="Form__auth-error">{authError.message}</div>
               ) : null}
               <Field name="username">
-                {({ field, form }) => (
+                {({ field }) => (
                   <div className={field.value ? 'Field HasValue' : 'Field '}>
                     <label>Pseudonym</label>
                     <input type="text" {...field} />
@@ -68,10 +67,10 @@ const SignUp = ({ history }) => {
               </Field>
               <ErrorMessage
                 name="username"
-                render={(msg) => <div className="Error">{msg}</div>}
+                render={msg => <div className="Error">{msg}</div>}
               />
               <Field name="email">
-                {({ field, form }) => (
+                {({ field }) => (
                   <div className={field.value ? 'Field HasValue' : 'Field '}>
                     <label>Email</label>
                     <input type="text" {...field} />
@@ -80,10 +79,10 @@ const SignUp = ({ history }) => {
               </Field>
               <ErrorMessage
                 name="email"
-                render={(msg) => <div className="Error">{msg}</div>}
+                render={msg => <div className="Error">{msg}</div>}
               />
               <Field name="password">
-                {({ field, form }) => (
+                {({ field }) => (
                   <div className={field.value ? 'Field HasValue' : 'Field '}>
                     <label>Password</label>
                     <input type="password" {...field} />
@@ -92,13 +91,13 @@ const SignUp = ({ history }) => {
               </Field>
               <ErrorMessage
                 name="password"
-                render={(msg) => <div className="Error">{msg}</div>}
+                render={msg => <div className="Error">{msg}</div>}
               />
               <button type="submit" disabled={isSubmitting}>
                 Submit
               </button>
             </Form>
-          );
+          )
         }}
       </Formik>
       <Link className="AltOption" to="/sign-in">
@@ -108,7 +107,7 @@ const SignUp = ({ history }) => {
         Confirm account
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default withRouter(SignUp);
+export default withRouter(SignUp)

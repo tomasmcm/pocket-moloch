@@ -1,34 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 
-import useModal from '../shared/useModal';
-import Modal from '../shared/Modal';
+import useModal from '../shared/useModal'
+import Modal from '../shared/Modal'
 
-import ConnectAccount from './ConnectAccount';
+import ConnectAccount from './ConnectAccount'
 
 import {
   CurrentUserContext,
   LoaderContext,
-  CurrentWalletContext,
-} from '../../contexts/Store';
+  CurrentWalletContext
+} from '../../contexts/Store'
 
-import Loading from '../shared/Loading';
-import './UserWallet.scss';
-import UserBalance from './UserBalances';
-import UserTransactions from './UserTransactions';
-import WithdrawWethForm from './WithdrawWethForm';
-import WithdrawEthForm from './WithdrawEthForm';
-import Deploy from './Deploy';
-import WrapEth from './WrapEth';
-import ApproveWeth from './ApproveWeth';
-import RageQuit from './RageQuit';
-import DepositForm from './DepositForm';
+import Loading from '../shared/Loading'
+import './UserWallet.scss'
+import UserBalance from './UserBalances'
+import UserTransactions from './UserTransactions'
+import WithdrawWethForm from './WithdrawWethForm'
+import WithdrawEthForm from './WithdrawEthForm'
+import Deploy from './Deploy'
+import WrapEth from './WrapEth'
+import ApproveWeth from './ApproveWeth'
+import RageQuit from './RageQuit'
+import DepositForm from './DepositForm'
 
 const UserWallet = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [loading] = useContext(LoaderContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
+  const [currentUser] = useContext(CurrentUserContext)
+  const [loading] = useContext(LoaderContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
 
-  const { isShowing, toggle } = useModal();
+  const { isShowing, toggle } = useModal()
 
   return (
     <>
@@ -62,7 +62,7 @@ const UserWallet = () => {
             </Modal>
 
             <Deploy />
-            
+
             <ConnectAccount />
 
             {currentWallet.state === 'Deployed' && (
@@ -88,23 +88,24 @@ const UserWallet = () => {
             </Modal>
 
             {currentWallet.state === 'Deployed' && (
-            <button
-            className="Button--Primary"
-            onClick={() => toggle('sendEth')}
-            >Send ETH</button>
+              <button
+                className="Button--Primary"
+                onClick={() => toggle('sendEth')}
+              >
+                Send ETH
+              </button>
             )}
-            <Modal
-              isShowing={isShowing.sendEth}
-              hide={() => toggle('sendEth')}
-            >
+            <Modal isShowing={isShowing.sendEth} hide={() => toggle('sendEth')}>
               <WithdrawEthForm />
             </Modal>
 
             {currentWallet.state === 'Deployed' && (
-            <button
-            className="Button--Primary"
-            onClick={() => toggle('sendWeth')}
-            >Send wETH</button>
+              <button
+                className="Button--Primary"
+                onClick={() => toggle('sendWeth')}
+              >
+                Send wETH
+              </button>
             )}
             <Modal
               isShowing={isShowing.sendWeth}
@@ -112,7 +113,7 @@ const UserWallet = () => {
             >
               <WithdrawWethForm />
             </Modal>
-            
+
             {currentWallet.state === 'Deployed' && (
               <button
                 className="Button--Tertiary"
@@ -137,6 +138,6 @@ const UserWallet = () => {
       )}
       <UserTransactions />
     </>
-  );
-};
-export default UserWallet;
+  )
+}
+export default UserWallet

@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 
-import { LoaderContext, CurrentWalletContext } from '../../contexts/Store';
-import Loading from '../shared/Loading';
-import Modal from '../shared/Modal';
-import ExportKeyStore from './ExportKeyStore';
-import SendAccountTransaction from './SendAccountTransaction';
-import ConnectAccount from './ConnectAccount';
-import useModal from '../shared/useModal';
+import { LoaderContext, CurrentWalletContext } from '../../contexts/Store'
+import Loading from '../shared/Loading'
+import Modal from '../shared/Modal'
+import ExportKeyStore from './ExportKeyStore'
+import SendAccountTransaction from './SendAccountTransaction'
+import ConnectAccount from './ConnectAccount'
+import useModal from '../shared/useModal'
 
 const AdvancedForm = () => {
-  const [loading] = useContext(LoaderContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
-  const { isShowing, toggle } = useModal();
+  const [loading] = useContext(LoaderContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
+  const { isShowing, toggle } = useModal()
 
   return (
     <>
@@ -25,7 +25,9 @@ const AdvancedForm = () => {
           <button
             className="Button--Primary"
             onClick={() => toggle('exportKeyStore')}
-          >Export Keystore</button>
+          >
+            Export Keystore
+          </button>
           <Modal
             isShowing={isShowing.exportKeyStore}
             hide={() => toggle('exportKeyStore')}
@@ -35,7 +37,9 @@ const AdvancedForm = () => {
           <button
             className="Button--Primary"
             onClick={() => toggle('sendAccountTransaction')}
-          >Send Account Transaction</button>
+          >
+            Send Account Transaction
+          </button>
           <Modal
             isShowing={isShowing.sendAccountTransaction}
             hide={() => toggle('sendAccountTransaction')}
@@ -45,7 +49,7 @@ const AdvancedForm = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default AdvancedForm;
+export default AdvancedForm

@@ -1,23 +1,23 @@
-import React, { useContext } from 'react';
-import Web3Service from '../../utils/Web3Service';
-import BcProcessorService from '../../utils/BcProcessorService';
-import { ethToWei } from '@netgum/utils'; // returns BN
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useContext } from 'react'
+import Web3Service from '../../utils/Web3Service'
+import BcProcessorService from '../../utils/BcProcessorService'
+import { ethToWei } from '@netgum/utils' // returns BN
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 
 import {
   CurrentUserContext,
   LoaderContext,
-  CurrentWalletContext,
-} from '../../contexts/Store';
-import useModal from '../shared/useModal';
-import Loading from '../shared/Loading';
+  CurrentWalletContext
+} from '../../contexts/Store'
+import useModal from '../shared/useModal'
+import Loading from '../shared/Loading'
 
 const WithdrawEthForm = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [loading, setLoading] = useContext(LoaderContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
+  const [currentUser] = useContext(CurrentUserContext)
+  const [loading, setLoading] = useContext(LoaderContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
 
-  const { toggle } = useModal();
+  const { toggle } = useModal()
 
   return (
     <>
@@ -28,69 +28,70 @@ const WithdrawEthForm = () => {
         initialValues={{
           amount: '',
           addr: currentUser.attributes['custom:account_address'],
-          dist: '',
+          dist: ''
         }}
-        validate={(values) => {
-          let errors = {};
+        validate={values => {
+          const errors = {}
           if (!values.amount) {
-            errors.amount = 'Required';
+            errors.amount = 'Required'
           }
           if (!values.dist) {
-            errors.dist = 'Required';
+            errors.dist = 'Required'
           }
 
-          return errors;
+          return errors
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const sdk = currentUser.sdk;
-          const web3Service = new Web3Service();
-          const bcprocessor = new BcProcessorService();
+          const sdk = currentUser.sdk
+          const web3Service = new Web3Service()
+          const bcprocessor = new BcProcessorService()
 
-          const bnAmmount = ethToWei(values.amount);
+          const bnAmmount = ethToWei(values.amount)
 
-          setLoading(true);
+          setLoading(true)
           try {
             const estimated = await sdk.estimateAccountTransaction(
               values.dist,
               bnAmmount,
-              null,
-            );
+              null
+            )
 
-            console.log(estimated);
             if (ethToWei(currentWallet.eth).lt(estimated.totalCost)) {
               alert(
                 `you need more gas, at least: ${web3Service.fromWei(
-                  estimated.totalCost.toString(),
-                )}`,
-              );
-              setLoading(false);
-              setSubmitting(false);
-              return false;
+                  estimated.totalCost.toString()
+                )}`
+              )
+              setLoading(false)
+              setSubmitting(false)
+              return false
             }
 
-            const hash = await sdk.submitAccountTransaction(estimated);
+            const hash = await sdk.submitAccountTransaction(estimated)
 
             bcprocessor.setTx(
               hash,
               currentUser.attributes['custom:account_address'],
               `Withdraw Eth: ${values.amount}`,
-              true,
-            );
+              true
+            )
           } catch (err) {
-            console.log(err);
-            alert(`Something went wrong. please try again`);
+            // TODO: handle errors better
+            // eslint-disable-next-line no-console
+            console.log(err)
+            alert(`Something went wrong. please try again`)
           }
 
-          resetForm();
-          setLoading(false);
-          setSubmitting(false);
-          toggle('ethWithdrawForm');
+          resetForm()
+          setLoading(false)
+          setSubmitting(false)
+          toggle('ethWithdrawForm')
         }}
       >
         {({ isSubmitting }) => (
           <Form className="Form">
             <Field name="amount">
-              {({ field, form }) => (
+              {({ field }) => (
                 <div className={field.value ? 'Field HasValue' : 'Field '}>
                   <label>Amount</label>
                   <input
@@ -105,7 +106,7 @@ const WithdrawEthForm = () => {
             </Field>
             <ErrorMessage
               name="amount"
-              render={(msg) => <div className="Error">{msg}</div>}
+              render={msg => <div className="Error">{msg}</div>}
             />
             <Field name="dist">
               {({ field, form }) => (
@@ -117,7 +118,7 @@ const WithdrawEthForm = () => {
             </Field>
             <ErrorMessage
               name="dist"
-              render={(msg) => <div className="Error">{msg}</div>}
+              render={msg => <div className="Error">{msg}</div>}
             />
             <button type="submit" disabled={isSubmitting}>
               Send
@@ -126,7 +127,7 @@ const WithdrawEthForm = () => {
         )}
       </Formik>
     </>
-  );
-};
+  )
+}
 
-export default WithdrawEthForm;
+export default WithdrawEthForm

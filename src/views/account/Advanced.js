@@ -1,19 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 
-import { LoaderContext, CurrentWalletContext } from '../../contexts/Store';
-import Loading from '../../components/shared/Loading';
-import Modal from '../../components/shared/Modal';
-import useModal from '../../components/shared/useModal';
-import ExportKeyStore from '../../components/account/ExportKeyStore';
-import SendAccountTransaction from '../../components/account/SendAccountTransaction';
-import ConnectAccount from '../../components/account/ConnectAccount';
-import WithdrawWethForm from '../../components/account/WithdrawWethForm';
-import WithdrawEthForm from '../../components/account/WithdrawEthForm';
+import { LoaderContext, CurrentWalletContext } from '../../contexts/Store'
+import Loading from '../../components/shared/Loading'
+import Modal from '../../components/shared/Modal'
+import useModal from '../../components/shared/useModal'
+import ExportKeyStore from '../../components/account/ExportKeyStore'
+import SendAccountTransaction from '../../components/account/SendAccountTransaction'
+import ConnectAccount from '../../components/account/ConnectAccount'
+import WithdrawWethForm from '../../components/account/WithdrawWethForm'
+import WithdrawEthForm from '../../components/account/WithdrawEthForm'
 
 const Advanced = () => {
-  const [loading] = useContext(LoaderContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
-  const { isShowing, toggle } = useModal();
+  const [loading] = useContext(LoaderContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
+  const { isShowing, toggle } = useModal()
 
   return (
     <>
@@ -27,7 +27,9 @@ const Advanced = () => {
           <button
             className="Button--Primary"
             onClick={() => toggle('exportKeyStore')}
-          >Export Keystore</button>
+          >
+            Export Keystore
+          </button>
           <Modal
             isShowing={isShowing.exportKeyStore}
             hide={() => toggle('exportKeyStore')}
@@ -37,7 +39,9 @@ const Advanced = () => {
           <button
             className="Button--Primary"
             onClick={() => toggle('sendAccountTransaction')}
-          >Send Account Transaction</button>
+          >
+            Send Account Transaction
+          </button>
           <Modal
             isShowing={isShowing.sendAccountTransaction}
             hide={() => toggle('sendAccountTransaction')}
@@ -47,7 +51,9 @@ const Advanced = () => {
           <button
             className="Button--Primary"
             onClick={() => toggle('wethWithdrawForm')}
-          >Withdraw wETH</button>
+          >
+            Withdraw wETH
+          </button>
           <Modal
             isShowing={isShowing.wethWithdrawForm}
             hide={() => toggle('wethWithdrawForm')}
@@ -57,7 +63,9 @@ const Advanced = () => {
           <button
             className="Button--Primary"
             onClick={() => toggle('ethWithdrawForm')}
-          >Withdraw ETH</button>
+          >
+            Withdraw ETH
+          </button>
           <Modal
             isShowing={isShowing.ethWithdrawForm}
             hide={() => toggle('ethWithdrawForm')}
@@ -67,7 +75,7 @@ const Advanced = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Advanced;
+export default Advanced

@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './Modal.scss';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './Modal.scss'
 
 const Modal = ({ isShowing, hide, children }) =>
   isShowing
@@ -34,8 +34,8 @@ const Modal = ({ isShowing, hide, children }) =>
             <div className="Contents FlexCenter">{children}</div>
           </div>
         </React.Fragment>,
-        document.body,
+        document.body
       )
-    : null;
+    : null
 
-export default Modal;
+export default Modal

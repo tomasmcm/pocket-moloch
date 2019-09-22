@@ -1,24 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-import StackedVote from './StackedVote';
-import Web3Service from '../../utils/Web3Service';
+import StackedVote from './StackedVote'
+import Web3Service from '../../utils/Web3Service'
 import {
   getProposalCountdownText,
-  titleMaker,
-} from '../../utils/ProposalHelper';
+  titleMaker
+} from '../../utils/ProposalHelper'
 
-import { GET_METADATA } from '../../utils/Queries';
-import { withApollo } from 'react-apollo';
+import { GET_METADATA } from '../../utils/Queries'
+import { withApollo } from 'react-apollo'
 
-import './ProposalCard.scss';
+import './ProposalCard.scss'
 
-const web3Service = new Web3Service();
+const web3Service = new Web3Service()
 
 const ProposalCard = ({ proposal, client }) => {
-  const { periodDuration } = client.cache.readQuery({ query: GET_METADATA });
-  const countDown = getProposalCountdownText(proposal, periodDuration);
-  const title = titleMaker(proposal);
+  const { periodDuration } = client.cache.readQuery({ query: GET_METADATA })
+  const countDown = getProposalCountdownText(proposal, periodDuration)
+  const title = titleMaker(proposal)
 
   return (
     <div className="ProposalCard">
@@ -54,7 +54,7 @@ const ProposalCard = ({ proposal, client }) => {
         View Proposal
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default withApollo(ProposalCard);
+export default withApollo(ProposalCard)

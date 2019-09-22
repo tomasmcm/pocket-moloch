@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import ProposalForm from '../../components/proposal/ProposalForm';
-import { Auth } from 'aws-amplify';
+import React, { Component } from 'react'
+import ProposalForm from '../../components/proposal/ProposalForm'
+import { Auth } from 'aws-amplify'
 
 class ProposalNew extends Component {
   state = {
-    user: null,
-  };
-  async componentDidMount() {
-    const user = await Auth.currentAuthenticatedUser();
+    user: null
+  }
 
-    this.setState({ user });
+  async componentDidMount() {
+    const user = await Auth.currentAuthenticatedUser()
+
+    this.setState({ user })
   }
 
   render() {
-    const user = this.state.user;
+    const user = this.state.user
     return (
       <div>
         {user ? (
@@ -25,8 +26,8 @@ class ProposalNew extends Component {
           <p>Not logged in</p>
         )}
       </div>
-    );
+    )
   }
 }
 
-export default ProposalNew;
+export default ProposalNew

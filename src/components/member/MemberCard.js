@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
-import Web3Service from '../../utils/Web3Service';
-import { truncateAddr } from '../../utils/Helpers';
-import { GetMetaData } from '../../utils/MemberService';
+import Web3Service from '../../utils/Web3Service'
+import { truncateAddr } from '../../utils/Helpers'
+import { GetMetaData } from '../../utils/MemberService'
 
-import './MemberCard.scss';
+import './MemberCard.scss'
 
-const web3Service = new Web3Service();
+const web3Service = new Web3Service()
 
 const MemberCard = ({ member }) => {
-  const [s3Data, setS3Data] = useState({});
+  const [s3Data, setS3Data] = useState({})
 
   useEffect(() => {
     const fetchData = async () => {
-      let metaData = await GetMetaData(member.delegateKey);
-      setS3Data(metaData);
-    };
+      const metaData = await GetMetaData(member.delegateKey)
+      setS3Data(metaData)
+    }
 
-    fetchData();
-  }, [member.delegateKey]);
+    fetchData()
+  }, [member.delegateKey])
 
   return (
     <Link className="MemberLink" to={{ pathname: '/member/' + member.id }}>
@@ -40,7 +40,7 @@ const MemberCard = ({ member }) => {
         </div>
       </div>
     </Link>
-  );
-};
+  )
+}
 
-export default MemberCard;
+export default MemberCard

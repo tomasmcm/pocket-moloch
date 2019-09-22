@@ -1,28 +1,28 @@
-import React, { useContext, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import React, { useContext, useState } from 'react'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
-import { CurrentUserContext } from '../../contexts/Store';
-import useInterval from '../../utils/PollingUtil';
+import { CurrentUserContext } from '../../contexts/Store'
+import useInterval from '../../utils/PollingUtil'
 
 const DepositForm = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [delay, setDelay] = useState(null);
-  const [copied, setCopied] = useState(false);
+  const [currentUser] = useContext(CurrentUserContext)
+  const [delay, setDelay] = useState(null)
+  const [copied, setCopied] = useState(false)
   const onCopy = () => {
-    setDelay(2500);
-    setCopied(true);
-  };
+    setDelay(2500)
+    setCopied(true)
+  }
 
   useInterval(() => {
-    setCopied(false);
-    setDelay(null);
-  }, delay);
+    setCopied(false)
+    setDelay(null)
+  }, delay)
   const addrStyle = {
     marginTop: '20px',
     border: '2px solid #efefef',
     padding: '15px 25px',
-    borderRadius: '50px',
-  };
+    borderRadius: '50px'
+  }
   return (
     <React.Fragment>
       {copied && (
@@ -32,7 +32,9 @@ const DepositForm = () => {
       )}
       <h2>Send funds to your wallet address</h2>
       <p>
-        You should deposit a minimum of 0.1 ETH. That will be enough to deploy the contract wallet, and leave you some for gas for ongoing participation.
+        You should deposit a minimum of 0.1 ETH. That will be enough to deploy
+        the contract wallet, and leave you some for gas for ongoing
+        participation.
       </p>
       <p>
         <svg
@@ -104,7 +106,7 @@ const DepositForm = () => {
         </button>
       </CopyToClipboard>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default DepositForm;
+export default DepositForm

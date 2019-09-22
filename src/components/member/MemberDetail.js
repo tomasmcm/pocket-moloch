@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import Web3Service from '../../utils/Web3Service';
-import { GetMetaData } from '../../utils/MemberService';
-import './MemberDetail.scss';
+import Web3Service from '../../utils/Web3Service'
+import { GetMetaData } from '../../utils/MemberService'
+import './MemberDetail.scss'
 
-const web3Service = new Web3Service();
+const web3Service = new Web3Service()
 
 const MemberDetail = ({ member }) => {
-  const [s3Data, setS3Data] = useState({});
+  const [s3Data, setS3Data] = useState({})
 
   useEffect(() => {
     const fetchData = async () => {
-      
-      let metaData = await GetMetaData(member.delegateKey);
-      setS3Data(metaData);
-    };
+      const metaData = await GetMetaData(member.delegateKey)
+      setS3Data(metaData)
+    }
 
-    fetchData();
-  }, [member.delegateKey]);
+    fetchData()
+  }, [member.delegateKey])
 
   return (
     <div className="MemberDetail">
@@ -36,7 +35,7 @@ const MemberDetail = ({ member }) => {
       <h5>Delegate Key</h5>
       <p className="Data">{member.delegateKey}</p>
     </div>
-  );
-};
+  )
+}
 
-export default MemberDetail;
+export default MemberDetail

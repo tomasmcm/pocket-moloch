@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const ErrorMessage = ({ message }) => {
   return (
@@ -6,7 +6,7 @@ const ErrorMessage = ({ message }) => {
       <p>There was an error :(</p>
       {/* <p>{message}</p> */}
     </div>
-  );
-};
+  )
+}
 
-export default ErrorMessage;
+export default ErrorMessage

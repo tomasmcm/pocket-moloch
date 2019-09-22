@@ -1,5 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-const Help = () => <div>Help Works</div>;
+const Help = () => <div>Help Works</div>
 
-export default Help;
+export default Help

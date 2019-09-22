@@ -1,33 +1,33 @@
-import React, { useContext, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, Fragment } from 'react'
+import { Link } from 'react-router-dom'
 
-import { CurrentUserContext } from '../../contexts/Store';
-import BcProcessorService from '../../utils/BcProcessorService';
-import IconProcessing from './IconProcessing';
+import { CurrentUserContext } from '../../contexts/Store'
+import BcProcessorService from '../../utils/BcProcessorService'
+import IconProcessing from './IconProcessing'
 
-import './BcToast.scss';
-import config from '../../config';
+import './BcToast.scss'
+import config from '../../config'
 
 const BcToast = () => {
-  const bcprocessor = new BcProcessorService();
+  const bcprocessor = new BcProcessorService()
 
-  const [currentUser] = useContext(CurrentUserContext);
+  const [currentUser] = useContext(CurrentUserContext)
 
-  const [isElementOpen, setElementOpen] = React.useState(false);
-  const toggleElement = () => setElementOpen(!isElementOpen);
+  const [isElementOpen, setElementOpen] = React.useState(false)
+  const toggleElement = () => setElementOpen(!isElementOpen)
 
   const pendingLength = () => {
     return bcprocessor.getTxPendingList(
-      currentUser.attributes['custom:account_address'],
-    ).length;
-  };
+      currentUser.attributes['custom:account_address']
+    ).length
+  }
 
   const renderList = () => {
     return bcprocessor
       .getTxList(currentUser.attributes['custom:account_address'])
       .slice(-3)
       .reverse()
-      .map((tx) => {
+      .map(tx => {
         return (
           <div className="Item" key={tx.tx}>
             <div className="Description">
@@ -72,9 +72,9 @@ const BcToast = () => {
               <p className="Data">{tx.open ? 'pending' : 'confirmed'}</p>
             </div>
           </div>
-        );
-      });
-  };
+        )
+      })
+  }
 
   return (
     currentUser && (
@@ -106,7 +106,7 @@ const BcToast = () => {
         </div>
       </Fragment>
     )
-  );
-};
+  )
+}
 
-export default BcToast;
+export default BcToast

@@ -1,51 +1,51 @@
-import React, { useEffect, useState, useContext } from 'react';
-import ReactPlayer from 'react-player';
+import React, { useEffect, useState, useContext } from 'react'
+import ReactPlayer from 'react-player'
 
-import Web3Service from '../../utils/Web3Service';
-import { GetMetaData } from '../../utils/ProposalService';
-import VoteControl from './VoteControl';
+import Web3Service from '../../utils/Web3Service'
+import { GetMetaData } from '../../utils/ProposalService'
+import VoteControl from './VoteControl'
 import {
   getProposalCountdownText,
-  titleMaker,
-} from '../../utils/ProposalHelper';
+  titleMaker
+} from '../../utils/ProposalHelper'
 
-import { CurrentUserContext } from '../../contexts/Store';
-import { GET_METADATA } from '../../utils/Queries';
-import { withApollo } from 'react-apollo';
+import { CurrentUserContext } from '../../contexts/Store'
+import { GET_METADATA } from '../../utils/Queries'
+import { withApollo } from 'react-apollo'
 
-import './ProposalDetail.scss';
+import './ProposalDetail.scss'
 
-const web3Service = new Web3Service();
+const web3Service = new Web3Service()
 
 const ProposalDetail = ({
   proposal,
   processProposal,
   submitVote,
   canVote,
-  client,
+  client
 }) => {
-  const [s3Data, setS3Data] = useState({});
-  const [currentUser] = useContext(CurrentUserContext);
-  const { periodDuration } = client.cache.readQuery({ query: GET_METADATA });
+  const [s3Data, setS3Data] = useState({})
+  const [currentUser] = useContext(CurrentUserContext)
+  const { periodDuration } = client.cache.readQuery({ query: GET_METADATA })
 
   useEffect(() => {
     const fetchData = async () => {
-      const uuid = proposal.details.split('~')[1];
+      const uuid = proposal.details.split('~')[1]
 
       if (uuid) {
-        let metaData = await GetMetaData(uuid);
-        setS3Data(metaData);
+        const metaData = await GetMetaData(uuid)
+        setS3Data(metaData)
       } else {
-        let metaData = await GetMetaData(proposal.id);
-        setS3Data(metaData);
+        const metaData = await GetMetaData(proposal.id)
+        setS3Data(metaData)
       }
-    };
+    }
 
-    fetchData();
-  }, [proposal.details, proposal.id]);
+    fetchData()
+  }, [proposal.details, proposal.id])
 
-  const countDown = getProposalCountdownText(proposal, periodDuration);
-  const title = titleMaker(proposal);
+  const countDown = getProposalCountdownText(proposal, periodDuration)
+  const title = titleMaker(proposal)
 
   return (
     <div className="ProposalDetail">
@@ -105,7 +105,7 @@ const ProposalDetail = ({
         canVote={canVote}
       />
     </div>
-  );
-};
+  )
+}
 
-export default withApollo(ProposalDetail);
+export default withApollo(ProposalDetail)

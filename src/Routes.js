@@ -1,20 +1,20 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import FourOhFour from './views/404/404';
-import Home from './views/home/Home';
-import Proposals from './views/proposals/Proposals';
-import Proposal from './views/proposal/Proposal';
-import ProposalNew from './views/proposal-new/ProposalNew';
-import Members from './views/members/Members';
-import Member from './views/member/Member';
-import Help from './views/help/Help';
-import Account from './views/account/Account';
-import SignUp from './views/auth/SignUp';
-import SignIn from './views/auth/SignIn';
-import Confirm from './views/auth/Confirm';
-import SignOut from './views/auth/SignOut';
-import AddDevice from './views/addDevice/AddDevice';
-import Advanced from './views/account/Advanced';
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+import FourOhFour from './views/404/404'
+import Home from './views/home/Home'
+import Proposals from './views/proposals/Proposals'
+import Proposal from './views/proposal/Proposal'
+import ProposalNew from './views/proposal-new/ProposalNew'
+import Members from './views/members/Members'
+import Member from './views/member/Member'
+import Help from './views/help/Help'
+import Account from './views/account/Account'
+import SignUp from './views/auth/SignUp'
+import SignIn from './views/auth/SignIn'
+import Confirm from './views/auth/Confirm'
+import SignOut from './views/auth/SignOut'
+import AddDevice from './views/addDevice/AddDevice'
+import Advanced from './views/account/Advanced'
 
 const Routes = () => (
   <Switch>
@@ -35,6 +35,6 @@ const Routes = () => (
     <Route path="/add-device/:deviceAddr" exact component={AddDevice} />
     <Route path="*" component={FourOhFour} />
   </Switch>
-);
+)
 
-export default Routes;
+export default Routes

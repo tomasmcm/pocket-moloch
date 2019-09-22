@@ -3,10 +3,10 @@ import {
   inGracePeriod,
   inVotingPeriod,
   inQueue,
-  passedVotingAndGrace,
-} from './ProposalHelper';
-import { gql } from 'apollo-boost';
-import { GET_METADATA } from './Queries';
+  passedVotingAndGrace
+} from './ProposalHelper'
+import { gql } from 'apollo-boost'
+import { GET_METADATA } from './Queries'
 
 export const resolvers = {
   Proposal: {
@@ -14,28 +14,28 @@ export const resolvers = {
       const {
         currentPeriod,
         votingPeriodLength,
-        gracePeriodLength,
-      } = cache.readQuery({ query: GET_METADATA });
+        gracePeriodLength
+      } = cache.readQuery({ query: GET_METADATA })
       return determineProposalStatus(
         proposal,
         +currentPeriod,
         +votingPeriodLength,
-        +gracePeriodLength,
-      );
+        +gracePeriodLength
+      )
     },
     gracePeriod: (proposal, _args, { cache }) => {
       const {
         currentPeriod,
         votingPeriodLength,
-        gracePeriodLength,
-      } = cache.readQuery({ query: GET_METADATA });
+        gracePeriodLength
+      } = cache.readQuery({ query: GET_METADATA })
 
       if (
         inGracePeriod(
           proposal,
           currentPeriod,
           votingPeriodLength,
-          gracePeriodLength,
+          gracePeriodLength
         )
       ) {
         return (
@@ -43,50 +43,50 @@ export const resolvers = {
           votingPeriodLength +
           gracePeriodLength -
           currentPeriod
-        );
+        )
       }
-      return 0;
+      return 0
     },
     votingEnds: (proposal, _args, { cache }) => {
       const { currentPeriod, votingPeriodLength } = cache.readQuery({
-        query: GET_METADATA,
-      });
+        query: GET_METADATA
+      })
 
       if (inVotingPeriod(proposal, currentPeriod, votingPeriodLength)) {
-        return proposal.startingPeriod + votingPeriodLength - currentPeriod;
+        return proposal.startingPeriod + votingPeriodLength - currentPeriod
       }
-      return 0;
+      return 0
     },
     votingStarts: (proposal, _args, { cache }) => {
-      const { currentPeriod } = cache.readQuery({ query: GET_METADATA });
+      const { currentPeriod } = cache.readQuery({ query: GET_METADATA })
       if (inQueue(proposal, currentPeriod)) {
-        return proposal.startingPeriod - currentPeriod;
+        return proposal.startingPeriod - currentPeriod
       }
-      return 0;
+      return 0
     },
     readyForProcessing: (proposal, _args, { cache }) => {
       const {
         currentPeriod,
         votingPeriodLength,
-        gracePeriodLength,
-      } = cache.readQuery({ query: GET_METADATA });
+        gracePeriodLength
+      } = cache.readQuery({ query: GET_METADATA })
       if (
         passedVotingAndGrace(
           proposal,
           currentPeriod,
           votingPeriodLength,
-          gracePeriodLength,
+          gracePeriodLength
         ) &&
         !proposal.processed
       ) {
-        return true;
+        return true
       }
-      return false;
-    },
+      return false
+    }
   },
   Mutation: {
     setAttributes: (_, variables, { cache }) => {
-      const id = `Proposal:${variables.id}`;
+      const id = `Proposal:${variables.id}`
       const fragment = gql`
         fragment getMeta on Proposal {
           status
@@ -95,8 +95,8 @@ export const resolvers = {
           votingStarts
           readyForProcessing
         }
-      `;
-      const proposal = cache.readFragment({ fragment, id });
+      `
+      const proposal = cache.readFragment({ fragment, id })
       const data = {
         ...proposal,
         status: variables.status,
@@ -105,10 +105,10 @@ export const resolvers = {
         gracePeriod: variables.gracePeriod,
         votingEnds: variables.votingEnds,
         votingStarts: variables.votingStarts,
-        readyForProcessing: variables.readyForProcessing,
-      };
-      cache.writeData({ id, data });
-      return data;
-    },
-  },
-};
+        readyForProcessing: variables.readyForProcessing
+      }
+      cache.writeData({ id, data })
+      return data
+    }
+  }
+}

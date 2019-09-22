@@ -1,24 +1,24 @@
-import React, { useContext } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { ethToWei } from '@netgum/utils'; // returns BN
+import React, { useContext } from 'react'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { ethToWei } from '@netgum/utils' // returns BN
 
-import McDaoService from '../../utils/McDaoService';
-import Web3Service from '../../utils/Web3Service';
+import McDaoService from '../../utils/McDaoService'
+import Web3Service from '../../utils/Web3Service'
 
-import BcProcessorService from '../../utils/BcProcessorService';
-import Loading from '../shared/Loading';
+import BcProcessorService from '../../utils/BcProcessorService'
+import Loading from '../shared/Loading'
 
 import {
   CurrentUserContext,
   LoaderContext,
-  CurrentWalletContext,
-} from '../../contexts/Store';
+  CurrentWalletContext
+} from '../../contexts/Store'
 
 const RageQuit = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [loading, setLoading] = useContext(LoaderContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
-  const web3Service = new Web3Service();
+  const [currentUser] = useContext(CurrentUserContext)
+  const [loading, setLoading] = useContext(LoaderContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
+  const web3Service = new Web3Service()
 
   return (
     <>
@@ -28,69 +28,71 @@ const RageQuit = () => {
       <p>
         Note: ragequit At any time, so long as a member has not voted YES on any
         proposal in the voting period or grace period, they can irreversibly
-        destroy some of their shares and receive a proportional sum of value from
-        the Guild Bank.
+        destroy some of their shares and receive a proportional sum of value
+        from the Guild Bank.
       </p>
       <Formik
         initialValues={{
           amount: '',
-          addr: currentUser.attributes['custom:account_address'],
+          addr: currentUser.attributes['custom:account_address']
         }}
-        validate={(values) => {
-          let errors = {};
+        validate={values => {
+          const errors = {}
           if (!values.amount) {
-            errors.amount = 'Required';
+            errors.amount = 'Required'
           }
 
-          return errors;
+          return errors
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const sdk = currentUser.sdk;
-          const daoService = new McDaoService();
-          const bcprocessor = new BcProcessorService();
-          const bnZed = ethToWei(0);
+          const sdk = currentUser.sdk
+          const daoService = new McDaoService()
+          const bcprocessor = new BcProcessorService()
+          const bnZed = ethToWei(0)
 
-          setLoading(true);
+          setLoading(true)
           const data = await daoService.rageQuit(
             values.addr,
             values.amount,
-            true,
-          );
+            true
+          )
 
           try {
             const estimated = await sdk.estimateAccountTransaction(
               daoService.contractAddr,
               bnZed,
-              data,
-            );
+              data
+            )
 
             // console.log(estimated);
             if (ethToWei(currentWallet.eth).lt(estimated.totalCost)) {
               alert(
                 `you need more gas, at least: ${web3Service.fromWei(
-                  estimated.totalCost.toString(),
-                )}`,
-              );
-              setLoading(false);
-              setSubmitting(false);
-              return false;
+                  estimated.totalCost.toString()
+                )}`
+              )
+              setLoading(false)
+              setSubmitting(false)
+              return false
             }
 
-            const hash = await sdk.submitAccountTransaction(estimated);
+            const hash = await sdk.submitAccountTransaction(estimated)
             bcprocessor.setTx(
               hash,
               currentUser.attributes['custom:account_address'],
               `Rage Quit (╯°□°）╯︵ ┻━┻ : ${values.amount}`,
-              true,
-            );
+              true
+            )
           } catch (err) {
-            console.log(err);
-            alert(`Something went wrong. please try again`);
+            // TODO: handle errors better
+            // eslint-disable-next-line no-console
+            console.error(err)
+            alert(`Something went wrong. please try again`)
           }
 
-          setLoading(false);
-          setSubmitting(false);
-          resetForm();
+          setLoading(false)
+          setSubmitting(false)
+          resetForm()
         }}
       >
         {({ isSubmitting }) => (
@@ -111,7 +113,7 @@ const RageQuit = () => {
             </Field>
             <ErrorMessage
               name="amount"
-              render={(msg) => <div className="Error">{msg}</div>}
+              render={msg => <div className="Error">{msg}</div>}
             />
             <button type="submit" disabled={isSubmitting}>
               Rage Quit (╯°□°）╯︵ ┻━┻
@@ -120,7 +122,7 @@ const RageQuit = () => {
         )}
       </Formik>
     </>
-  );
-};
+  )
+}
 
-export default RageQuit;
+export default RageQuit

@@ -1,22 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 
-import { ethToWei } from '@netgum/utils'; // returns BN
-import BcProcessorService from '../../utils/BcProcessorService';
-import Web3Service from '../../utils/Web3Service';
+import { ethToWei } from '@netgum/utils' // returns BN
+import BcProcessorService from '../../utils/BcProcessorService'
+import Web3Service from '../../utils/Web3Service'
 
 import {
   CurrentUserContext,
   CurrentWalletContext,
-  LoaderContext,
-} from '../../contexts/Store';
-import Loading from '../shared/Loading';
+  LoaderContext
+} from '../../contexts/Store'
+import Loading from '../shared/Loading'
 
 const SendAccountTransaction = () => {
-  const [currentUser] = useContext(CurrentUserContext);
-  const [currentWallet] = useContext(CurrentWalletContext);
-  const [loading, setLoading] = useContext(LoaderContext);
+  const [currentUser] = useContext(CurrentUserContext)
+  const [currentWallet] = useContext(CurrentWalletContext)
+  const [loading, setLoading] = useContext(LoaderContext)
 
   return (
     <>
@@ -26,62 +26,64 @@ const SendAccountTransaction = () => {
         initialValues={{
           addr: currentUser.attributes['custom:account_address'],
           contractAddr: '',
-          data: '',
+          data: ''
         }}
-        validate={(values) => {
-          let errors = {};
+        validate={values => {
+          const errors = {}
           if (!values.data) {
-            errors.addr = 'Required';
+            errors.addr = 'Required'
           }
           if (!values.contractAddr) {
-            errors.contractAddr = 'Required';
+            errors.contractAddr = 'Required'
           }
 
-          return errors;
+          return errors
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const sdk = currentUser.sdk;
-          const bcprocessor = new BcProcessorService();
-          const web3Service = new Web3Service();
+          const sdk = currentUser.sdk
+          const bcprocessor = new BcProcessorService()
+          const web3Service = new Web3Service()
 
-          const bnZed = ethToWei(0);
+          const bnZed = ethToWei(0)
 
-          setLoading(true);
+          setLoading(true)
 
           try {
             const estimated = await sdk.estimateAccountTransaction(
               values.contractAddr,
               bnZed,
-              values.data,
-            );
+              values.data
+            )
 
             // console.log(estimated);
             if (ethToWei(currentWallet.eth).lt(estimated.totalCost)) {
               alert(
                 `you need more gas, at least: ${web3Service.fromWei(
-                  estimated.totalCost.toString(),
-                )}`,
-              );
-              setLoading(false);
-              setSubmitting(false);
-              return false;
+                  estimated.totalCost.toString()
+                )}`
+              )
+              setLoading(false)
+              setSubmitting(false)
+              return false
             }
 
-            const hash = await sdk.submitAccountTransaction(estimated);
+            const hash = await sdk.submitAccountTransaction(estimated)
             bcprocessor.setTx(
               hash,
               currentUser.attributes['custom:account_address'],
               `Send Account Transaction: ${values.amount}`,
-              true,
-            );
+              true
+            )
           } catch (err) {
-            console.log(err);
-            alert(`Something went wrong. please try again`);
+            // TODO: handle errors better
+            // eslint-disable-next-line no-console
+            console.error(err)
+            alert(`Something went wrong. please try again`)
           }
 
-          setLoading(false);
-          setSubmitting(false);
-          resetForm();
+          setLoading(false)
+          setSubmitting(false)
+          resetForm()
         }}
       >
         {({ isSubmitting }) => (
@@ -98,7 +100,7 @@ const SendAccountTransaction = () => {
         )}
       </Formik>
     </>
-  );
-};
+  )
+}
 
-export default SendAccountTransaction;
+export default SendAccountTransaction

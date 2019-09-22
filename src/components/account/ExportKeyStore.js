@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 
-import Web3Service from '../../utils/Web3Service';
+import Web3Service from '../../utils/Web3Service'
 
-import { CurrentUserContext } from '../../contexts/Store';
+import { CurrentUserContext } from '../../contexts/Store'
 
-import config from '../../config';
+import config from '../../config'
 
 const ExportKeyStore = () => {
-  const [currentUser] = useContext(CurrentUserContext);
+  const [currentUser] = useContext(CurrentUserContext)
 
   return (
     <>
@@ -17,40 +17,40 @@ const ExportKeyStore = () => {
       <Formik
         initialValues={{
           password: '',
-          addr: currentUser.attributes['custom:account_address'],
+          addr: currentUser.attributes['custom:account_address']
         }}
-        validate={(values) => {
-          let errors = {};
+        validate={values => {
+          const errors = {}
           if (!values.password) {
-            errors.password = 'Required';
+            errors.password = 'Required'
           }
 
-          return errors;
+          return errors
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const web3Service = new Web3Service();
-          const network = config.SDK_ENV.toLowerCase();
+          const web3Service = new Web3Service()
+          const network = config.SDK_ENV.toLowerCase()
           const aValue = JSON.parse(
-            localStorage.getItem(`@archanova:${network}:device:private_key`),
-          );
+            localStorage.getItem(`@archanova:${network}:device:private_key`)
+          )
 
           const store = await web3Service.getKeyStore(
             '0x' + aValue.data,
-            values.password,
-          );
+            values.password
+          )
 
-          var a = document.createElement('a');
+          var a = document.createElement('a')
           var file = new Blob([JSON.stringify(store)], {
-            type: 'text/plain',
-          });
-          a.href = URL.createObjectURL(file);
-          a.download = `${values.addr}-keystore.json`;
-          a.target = '_blank';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+            type: 'text/plain'
+          })
+          a.href = URL.createObjectURL(file)
+          a.download = `${values.addr}-keystore.json`
+          a.target = '_blank'
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
 
-          resetForm();
+          resetForm()
         }}
       >
         {({ isSubmitting }) => (
@@ -65,7 +65,7 @@ const ExportKeyStore = () => {
         )}
       </Formik>
     </>
-  );
-};
+  )
+}
 
-export default ExportKeyStore;
+export default ExportKeyStore

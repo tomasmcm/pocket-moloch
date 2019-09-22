@@ -1,23 +1,23 @@
-import React, { useContext, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { Query } from 'react-apollo';
+import React, { useContext, Fragment } from 'react'
+import { Link } from 'react-router-dom'
+import { Query } from 'react-apollo'
 
-import { GET_PROPOSALS_QUERY } from '../../utils/ProposalService';
-import ProposalFilter from '../../components/proposal/ProposalFilter';
-import ErrorMessage from '../../components/shared/ErrorMessage';
-import BottomNav from '../../components/shared/BottomNav';
-import Loading from '../../components/shared/Loading';
-import { CurrentWalletContext } from '../../contexts/Store';
+import { GET_PROPOSALS_QUERY } from '../../utils/ProposalService'
+import ProposalFilter from '../../components/proposal/ProposalFilter'
+import ErrorMessage from '../../components/shared/ErrorMessage'
+import BottomNav from '../../components/shared/BottomNav'
+import Loading from '../../components/shared/Loading'
+import { CurrentWalletContext } from '../../contexts/Store'
 
-const Proposals = ({match, history}) => {
-  const [currentWallet] = useContext(CurrentWalletContext);  
+const Proposals = ({ match, history }) => {
+  const [currentWallet] = useContext(CurrentWalletContext)
 
   return (
     <Fragment>
-      <Query query={GET_PROPOSALS_QUERY} pollInterval={20000}> 
+      <Query query={GET_PROPOSALS_QUERY} pollInterval={20000}>
         {({ loading, error, data }) => {
-          if (loading) return <Loading />;
-          if (error) return <ErrorMessage message={error} />;
+          if (loading) return <Loading />
+          if (error) return <ErrorMessage message={error} />
 
           return (
             <div className="View">
@@ -43,14 +43,18 @@ const Proposals = ({match, history}) => {
                   </div>
                 ) : null}
               </div>
-              <ProposalFilter proposals={data.proposals} filter={match.params.filter || 'na'} history={history} />
+              <ProposalFilter
+                proposals={data.proposals}
+                filter={match.params.filter || 'na'}
+                history={history}
+              />
             </div>
-          );
+          )
         }}
       </Query>
       <BottomNav />
     </Fragment>
-  );
-};
+  )
+}
 
-export default Proposals;
+export default Proposals

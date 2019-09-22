@@ -1,18 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 
-import { CurrentUserContext } from '../../contexts/Store';
-import BcProcessorService from '../../utils/BcProcessorService';
-import config from '../../config';
+import { CurrentUserContext } from '../../contexts/Store'
+import BcProcessorService from '../../utils/BcProcessorService'
+import config from '../../config'
 
 const UserTransactions = () => {
-  const bcprocessor = new BcProcessorService();
+  const bcprocessor = new BcProcessorService()
 
-  const [currentUser] = useContext(CurrentUserContext);
+  const [currentUser] = useContext(CurrentUserContext)
 
   const renderList = () => {
     return bcprocessor
       .getTxList(currentUser.attributes['custom:account_address'])
-      .map((tx) => {
+      .map(tx => {
         return (
           <div className="Item" key={tx.tx}>
             <div className="Description">
@@ -109,9 +109,9 @@ const UserTransactions = () => {
               <p className="Data">{tx.open ? 'pending' : 'confirmed'}</p>
             </div>
           </div>
-        );
-      });
-  };
+        )
+      })
+  }
 
   return (
     <div className="Transactions">
@@ -122,7 +122,7 @@ const UserTransactions = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default UserTransactions;
+export default UserTransactions
