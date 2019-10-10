@@ -112,7 +112,7 @@ const Home = ({ client, history }) => {
             <div className="Home">
               
               <div className="Intro">
-                <h1>PokéMol DAO</h1>
+                <h1>thisDAO</h1>
                 <p>Put a Moloch in Your Pocket</p>
               </div>
               <div className="Chart" style={{ width: '100%', height: '33vh' }}>
