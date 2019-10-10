@@ -15,6 +15,8 @@ import './Home.scss';
 import WethService from '../../utils/WethService';
 import StateModals from '../../components/shared/StateModals';
 
+import Brand from '../../assets/Logo.svg';
+
 const Home = ({ client, history }) => {
   const [vizData, setVizData] = useState([]);
   const [chartView, setChartView] = useState('bank');
@@ -112,7 +114,7 @@ const Home = ({ client, history }) => {
             <div className="Home">
               
               <div className="Intro">
-                <h1>thisDAO</h1>
+                <img src={Brand} alt="thisDAO" />
                 <p>Put a Moloch in Your Pocket</p>
               </div>
               <div className="Chart" style={{ width: '100%', height: '33vh' }}>

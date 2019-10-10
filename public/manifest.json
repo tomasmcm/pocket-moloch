@@ -1,8 +1,8 @@
 {
-  "name": "Pocket Moloch",
-  "short_name": "Pokemol",
-  "theme_color": "#bd86fe",
-  "background_color": "#ef497b",
+  "name": "thisDAO",
+  "short_name": "thisDAO",
+  "theme_color": "#2E81CE",
+  "background_color": "#499FEF",
   "display": "minimal-ui",
   "Scope": "/",
   "start_url": "/",
