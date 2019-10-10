@@ -1,0 +1,16 @@
+{
+  "build": {
+    "env": {
+      "REACT_APP_GRAPH_NODE_URI": "@react_app_graph_node_uri",
+      "REACT_APP_INFURA_URI": "@react_app_infura_uri",
+      "REACT_APP_CONTRACT_ADDRESS": "@react_app_contract_address",
+      "REACT_APP_WETH_CONTRACT_ADDRESS": "@react_app_weth_contract_address",
+      "REACT_APP_SDK_ENV": "@react_app_sdk_env",
+      "REACT_APP_S3_REGION": "@react_app_s3_region",
+      "REACT_APP_S3_BUCKET": "@react_app_s3_bucket",
+      "REACT_APP_COGNITO_REGION": "@react_app_cognito_region",
+      "REACT_APP_COGNITO_USER_POOL_ID": "@react_app_cognito_user_pool_id",
+      "REACT_APP_COGNITO_APP_CLIENT_ID": "@react_app_cognito_app_client_id"
+    }
+  }
+}

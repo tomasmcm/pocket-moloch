@@ -28,9 +28,11 @@
   "scripts": {
     "start": "react-scripts start",
     "dev-build": "react-scripts build",
-    "build": "REACT_APP_STAGE=prod npm run build",
+    "build": "REACT_APP_STAGE=prod npm run dev-build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "now -n dao",
+    "deploy-prod": "now -n dao --prod"
   },
   "eslintConfig": {
     "extends": "react-app"
