@@ -1,4 +1,5 @@
 {
+  "alias": ["thisdao.now.sh"],
   "build": {
     "env": {
       "REACT_APP_GRAPH_NODE_URI": "@react_app_graph_node_uri",
