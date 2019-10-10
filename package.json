@@ -26,9 +26,9 @@
     "web3": "1.0.0-beta.34"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_STAGE=prod react-scripts start",
     "dev-build": "react-scripts build",
-    "build": "REACT_APP_STAGE=prod npm run dev-build",
+    "build": "REACT_APP_STAGE=prod react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "now -n dao",
