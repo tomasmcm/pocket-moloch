@@ -13,5 +13,8 @@
       "REACT_APP_COGNITO_USER_POOL_ID": "@react_app_cognito_user_pool_id",
       "REACT_APP_COGNITO_APP_CLIENT_ID": "@react_app_cognito_app_client_id"
     }
+  },
+  "github": {
+    "silent": true
   }
 }
